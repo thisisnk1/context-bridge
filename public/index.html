@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="A local-first AI workspace for knowledge handovers." />
+  <title>Context Bridge</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="#top" aria-label="Context Bridge home"><span class="brand-glyph">↗</span><span>context<span>bridge</span></span></a>
+      <nav class="nav-links" aria-label="Main navigation"><a href="#capture">Capture</a><a href="#handoffs">Handoffs</a><a href="#actions">Commitments</a><a href="#knowledge">Memory</a></nav>
+      <div class="ai-status"><i></i><span id="ai-provider">AI loading</span><small id="ai-provider-detail">checking provider</small></div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div><p class="kicker">AI-POWERED TEAM CONTINUITY</p><h1>Turn every conversation<br>into <em>forward motion.</em></h1><p class="hero-copy">Capture the signal from chats, transcripts, and voice notes. Context Bridge turns scattered context into decisions, ownership, and momentum.</p><div class="hero-actions"><a class="primary hero-cta" href="#capture">Start a handover <b>↗</b></a><span class="hero-caption">Powered by Gemini · Built for teams</span></div></div>
+        <div class="hero-proof"><div class="proof-mark">AI</div><div><b id="provider-title">Your AI, your workflow.</b><span id="provider-note">The provider is loading securely.</span></div></div>
+      </section>
+
+      <section class="metric-grid" id="stats" aria-label="Workspace metrics"></section>
+
+      <section id="capture" class="capture-layout">
+        <article class="capture-card">
+          <div class="panel-heading"><div><p class="kicker">NEW HANDOVER</p><h2>What did the team talk about?</h2></div><span class="step-pill">01 · capture</span></div>
+          <div class="capture-tabs" role="tablist"><button class="tab active" data-tab="dump">Messages / transcript</button><button class="tab" data-tab="audio">Meeting recording</button><button class="tab" data-tab="note">Save a team note</button></div>
+          <div class="capture-form" id="dump-panel">
+            <div class="form-grid"><label><span>Where is this from?</span><select id="source-kind"><option>WhatsApp group export</option><option>Slack export</option><option>Online meeting transcript</option><option>Text messages / notes</option></select></label><label><span>What are you creating?</span><select id="handoff-kind"><option value="meeting">Meeting recap</option><option value="handover">Work handover</option></select></label></div>
+            <label class="field-label">Give it a short name <input id="intake-title" maxlength="90" placeholder="e.g. Merchant dashboard launch" /></label>
+            <label class="conversation-label"><span>Paste the conversation or transcript</span><textarea id="raw-text" minlength="12" placeholder="Suresh: We decided to move the launch to Tuesday…&#10;Jayesh: I will finish the security evidence by Friday…"></textarea></label>
+            <div class="capture-footer"><label class="file-trigger">＋ Import .txt, .csv, .json or .md <input id="text-file" type="file" accept=".txt,.csv,.json,.md,text/plain,application/json,text/csv" /></label><span id="file-status">Speaker names and dates make the AI result stronger.</span><button class="primary" id="analyse-btn">Generate handover <b>→</b></button></div>
+          </div>
+          <div class="capture-form hidden" id="audio-panel"><div class="recording-drop"><div class="recording-icon">⌁</div><div><strong>Bring in any meeting audio</strong><p>Upload an audio file or record a voice note. Gemini can transcribe it when you press Transcribe.</p></div><input id="audio-file" type="file" accept="audio/mpeg,audio/mp4,audio/x-m4a,audio/wav,audio/x-wav,audio/ogg,audio/webm,.mp3,.m4a,.wav,.ogg,.webm" /></div><div class="capture-footer"><span id="audio-status">MP3, M4A, WAV, OGG or WebM · max 20 MB</span><button class="secondary" id="record-audio">Record voice</button><button class="primary" id="upload-audio">Save recording <b>→</b></button></div></div>
+          <div class="capture-form hidden" id="note-panel"><div class="form-grid"><label><span>Note title</span><input id="knowledge-title" maxlength="120" placeholder="e.g. Release rollback policy" /></label><label><span>Tags</span><input id="knowledge-tags" maxlength="180" placeholder="release, ops, policy" /></label></div><label class="conversation-label"><span>Team knowledge</span><textarea id="knowledge-content" minlength="10" placeholder="Add a policy, product detail, or handover guidance the team should retain."></textarea></label><label class="file-trigger knowledge-file-trigger">＋ Attach files <input id="knowledge-files" type="file" multiple /></label><div id="knowledge-file-status" class="file-status">Up to 5 files · 10 MB each · 20 MB total</div><div class="capture-footer"><span>New handovers will surface related notes automatically.</span><button class="primary" id="save-knowledge">Save to memory <b>→</b></button></div></div>
+        </article>
+        <aside class="ai-preview" aria-live="polite"><div id="latest-analysis" class="preview-empty"><div class="empty-orb">✦</div><h3>From raw words to a useful handover.</h3><p>Your configured AI extracts decisions, accountable owners, and what still needs an answer - with evidence from the source.</p><div class="preview-list"><span>✓ Decision record</span><span>✓ Assigned next steps</span><span>✓ Catch-up brief</span></div></div></aside>
+      </section>
+
+      <section id="handoffs" class="content-section">
+        <div class="section-bar"><div><p class="kicker">RECENT HANDOVERS</p><h2>Context people can actually pick up.</h2></div><div class="section-actions"><span id="handoff-filter-note">Verified AI analyses</span><button class="secondary" id="toggle-drafts">Show review drafts</button></div></div>
+        <div id="handoff-list" class="handoff-grid"></div>
+      </section>
+
+      <section id="actions" class="content-section commitments-section">
+        <div class="section-bar"><div><p class="kicker">COMMITMENTS</p><h2 id="commitment-heading">Open work, with a clear owner.</h2></div><div class="section-actions"><button class="secondary hidden" id="clear-commitment-filter">Show all</button><button class="primary" id="toggle-commitment-form">＋ Add commitment</button></div></div>
+        <form class="commitment-form hidden" id="commitment-form">
+          <label><span>Commitment</span><input id="commitment-title" maxlength="240" required placeholder="e.g. Confirm the rollback owner" /></label>
+          <label><span>Owner</span><input id="commitment-owner" maxlength="60" placeholder="Unassigned" /></label>
+          <label><span>Due date</span><input id="commitment-due" type="date" /></label>
+          <label><span>Attach to handover</span><select id="commitment-handoff" required></select></label>
+          <button class="primary" type="submit">Save commitment <b>→</b></button>
+        </form>
+        <div class="action-head"><span>Commitment</span><span>Owner</span><span>Due date</span><span>State</span></div><div id="action-list" class="action-list"></div>
+      </section>
+
+      <section class="bottom-grid">
+        <article id="knowledge" class="memory-card"><div class="panel-heading"><div><p class="kicker">TEAM MEMORY</p><h2>Context that outlives the meeting.</h2></div><span class="memory-icon">⌘</span></div><div id="knowledge-list" class="knowledge-list"></div></article>
+        <article class="recordings-card"><div class="panel-heading"><div><p class="kicker">RECORDINGS</p><h2>Audio, safely retained.</h2></div><span class="memory-icon">◌</span></div><p class="recording-copy">Audio stays local until you choose Gemini transcription.</p><div id="recording-list" class="recording-list"></div></article>
+      </section>
+    </main>
+
+    <footer><span id="provider-footer">Context Bridge · AI provider loading</span><span id="footer-correlation">Ready</span></footer>
+  </div>
+  <dialog id="brief-dialog"><button class="close-dialog" aria-label="Close">×</button><p class="kicker" id="brief-label">CATCH-UP BRIEF</p><h2 id="brief-title"></h2><div id="brief-content"></div></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "context-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A local-first knowledge transfer and follow-through workspace.",
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "start": "node --no-warnings src/server.js",
+    "dev": "node --watch --no-warnings src/server.js",
+    "seed": "node --no-warnings src/seed.js",
+    "test": "node --no-warnings --test"
+  }
+}
